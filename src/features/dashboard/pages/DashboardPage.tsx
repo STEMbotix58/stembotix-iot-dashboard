@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import DashboardHeader from "@/features/dashboard/components/DashboardHeader";
 import OverviewCards from "@/features/dashboard/components/OverviewCards";
 import DeviceStatusTable from "@/features/dashboard/components/DeviceStatusTable";
