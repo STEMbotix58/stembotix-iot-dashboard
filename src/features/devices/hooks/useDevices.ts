@@ -19,7 +19,7 @@ export const useDevices = () => {
     try {
       const data = await devicesService.getDevices();
 
-      dispatch(setDevices(data));
+      dispatch(setDevices(data.data));
     } finally {
       dispatch(setLoading(false));
     }

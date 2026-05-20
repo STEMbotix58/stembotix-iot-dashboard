@@ -1,18 +1,12 @@
-import { Navigate } from "react-router-dom";
-import { authService } from "@/features/authentication/services/auth.service";
+import { type ReactNode } from "react";
+import AuthGuard from "@/core/auth/auth-guard";
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
-const ProtectedRoute = ({ children }: Props) => {
-  const auth = authService.getAuth();
-
-  if (!auth?.token) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return children;
+const ProtectedRoutes = ({ children }: Props) => {
+  return <AuthGuard>{children}</AuthGuard>;
 };
 
-export default ProtectedRoute;
+export default ProtectedRoutes;

@@ -1,3 +1,4 @@
+import type { Device } from "@/entities/device/device.types";
 import { useDevices } from "../hooks/useDevices";
 import { useDeviceSelection } from "../hooks/useDeviceSelection";
 
@@ -10,7 +11,7 @@ const DeviceSelector = () => {
     <select
       value={selectedDevice?.id || ""}
       onChange={(e) => {
-        const device = devices.find((d) => d.id === e.target.value);
+        const device = devices.find((d: Device) => d.id === e.target.value);
 
         if (device) {
           selectDevice(device);
@@ -20,7 +21,7 @@ const DeviceSelector = () => {
     >
       <option value="">Select Device</option>
 
-      {devices.map((device) => (
+      {devices.map((device: Device) => (
         <option key={device.id} value={device.id}>
           {device.name}
         </option>

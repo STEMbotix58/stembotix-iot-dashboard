@@ -15,12 +15,14 @@
     "apexcharts": "^5.11.0",
     "axios": "^1.16.0",
     "lucide-react": "^1.14.0",
+    "mqtt": "^5.15.1",
     "react": "^19.2.6",
     "react-apexcharts": "^2.1.0",
     "react-dom": "^19.2.6",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.15.0",
-    "yup": "^1.7.1"
+    "yup": "^1.7.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

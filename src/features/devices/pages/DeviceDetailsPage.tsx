@@ -9,6 +9,8 @@ import DeviceActions from "../components/DeviceActions";
 import LineChart from "@/shared/charts/LineChart";
 import AreaChart from "@/shared/charts/AreaChart";
 import GaugeChart from "@/shared/charts/GaugeChart";
+import BarChart from "@/shared/charts/BarChart";
+import RealtimeChart from "@/shared/charts/RealtimeChart";
 
 const DeviceDetailsPage = () => {
   const { device } = useDeviceDetails();
@@ -20,8 +22,22 @@ const DeviceDetailsPage = () => {
   const telemetrySeries = [
     {
       name: "Temperature",
-      data: [20, 24, 26, 28, 25, 27, 30],
+      data: [11, 32, 45, 32, 34, 52, 41],
     },
+    {
+      name: "Humidity",
+      data: [31, 40, 28, 51, 42, 109, 100],
+    },
+  ];
+
+  const telemetryBarCategories = [
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat",
+    "Sun",
   ];
 
   const telemetryCategories = [
@@ -126,17 +142,62 @@ const DeviceDetailsPage = () => {
 
       <div className="grid gap-6 xl:grid-cols-2">
         <LineChart
-          title="Realtime Telemetry"
+          title="System Status"
           series={telemetrySeries}
-          categories={telemetryCategories}
-          height={350}
+          categories={telemetryBarCategories}
+          customOptions={{
+            fill: {
+              type: "solid",
+              opacity: 0.1,
+            },
+            markers: {
+              size: 5,
+              strokeColors: "#fff",
+              strokeWidth: 2,
+            },
+          }}
         />
-
         <AreaChart
-          title="Usage Analytics"
+          title="Server Load"
+          series={[{ name: "CPU %", data: [15, 25, 20, 45, 30] }]}
+          categories={["12pm", "1pm", "2pm", "3pm", "4pm"]}
+          customOptions={{
+            stroke: {
+              curve: "straight", // Full Control: Overriding the default smooth curve
+              width: 1,
+            },
+            colors: ["#000000"], // Overriding the color to a sleek black
+            fill: {
+              gradient: {
+                opacityFrom: 0.2,
+                opacityTo: 0,
+              },
+            },
+          }}
+        />
+        <BarChart
+          title="Environment Metrics"
+          series={[
+            { name: "Temperature", data: [11, 32, 45, 32, 34, 52, 41] },
+            { name: "Humidity", data: [31, 40, 28, 51, 42, 109, 100] },
+          ]}
+          categories={telemetryCategories}
+        />
+        <RealtimeChart
+          title="Temperature Over Time"
           series={telemetrySeries}
           categories={telemetryCategories}
           height={350}
+          customOptions={{
+            xaxis: {
+              min: 0,
+              max: 10,
+            },
+            yaxis: {
+              min: 0,
+              max: 120,
+            },
+          }}
         />
       </div>
 
@@ -144,14 +205,28 @@ const DeviceDetailsPage = () => {
 
       <div className="grid gap-6 xl:grid-cols-3">
         {/* Gauge */}
-
-        <div className="rounded-3xl bg-white p-6 shadow-sm">
+        <>
           <GaugeChart
-            // title="Device Health"
-            value={82}
-            height={320}
+            label="CPU Load"
+            value={76}
+            customOptions={{
+              plotOptions: {
+                radialBar: {
+                  track: {
+                    background: "#E0E7FF",
+                    strokeWidth: "97%",
+                    margin: 5,
+                  },
+                  dataLabels: {
+                    value: {
+                      formatter: (val) => `${val}ºC`,
+                    },
+                  },
+                },
+              },
+            }}
           />
-        </div>
+        </>
 
         {/* Device Metadata */}
 

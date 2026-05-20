@@ -1,25 +1,30 @@
 import { NavLink } from "react-router-dom";
+import ROUTES from "@/core/constants/routes.constants";
 
 const navigation = [
   {
     label: "Dashboard",
-    path: "/dashboard",
+    path: ROUTES.DASHBOARD,
   },
+
   {
     label: "Devices",
-    path: "/dashboard/devices",
+    path: ROUTES.DEVICES,
   },
+
   {
     label: "Analytics",
-    path: "/dashboard/analytics",
+    path: ROUTES.ANALYTICS,
   },
+
   {
     label: "Alerts",
-    path: "/dashboard/alerts",
+    path: ROUTES.ALERTS,
   },
+
   {
     label: "Settings",
-    path: "/dashboard/settings",
+    path: ROUTES.SETTINGS,
   },
 ];
 

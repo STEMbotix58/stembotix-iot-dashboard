@@ -1,18 +1,21 @@
+import { type ReactNode } from "react";
 import { Navigate } from "react-router-dom";
-import { authService } from "@/features/authentication/services/auth.service";
+import ROUTES from "@/core/constants/routes.constants";
+
+import sessionManager from "@/core/auth/session-manager";
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
-const PublicRoute = ({ children }: Props) => {
-  const auth = authService.getAuth();
+const PublicRoutes = ({ children }: Props) => {
+  const authenticated = sessionManager.isAuthenticated();
 
-  if (auth?.token) {
-    return <Navigate to="/dashboard" replace />;
+  if (authenticated) {
+    return <Navigate to={ROUTES.DASHBOARD} replace />;
   }
 
   return children;
 };
 
-export default PublicRoute;
+export default PublicRoutes;

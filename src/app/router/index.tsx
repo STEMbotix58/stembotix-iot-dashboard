@@ -1,25 +1,41 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
-import LoginPage from "@/features/authentication/pages/LoginPage";
-import DashboardLayout from "@/features/dashboard/layouts/DashboardLayout";
-import DashboardPage from "@/features/dashboard/pages/DashboardPage";
+// Layout
+import DashboardLayout from "@/app/layouts/DashboardLayout";
+import AuthLayout from "@/app/layouts/AuthLayout";
+import DeviceLayout from "@/app/layouts/DeviceLayout";
 
-import ProtectedRoutes from "./protected-routes";
-import PublicRoutes from "./public-routes";
+// Pages
+import DashboardPage from "@/features/dashboard/pages/DashboardPage";
+import LoginPage from "@/features/authentication/pages/LoginPage";
 import DevicesPage from "@/features/devices/pages/DevicesPage";
 import DeviceDetailsPage from "@/features/devices/pages/DeviceDetailsPage";
+import AnalyticsPage from "@/features/analytics/pages/AnalyticsPage";
+import AlertsPage from "@/features/alerts/pages/AlertsPage";
+import SettingsPage from "@/features/settings/pages/SettingsPage";
+
+// Routes
+import ProtectedRoutes from "./protected-routes";
+import PublicRoutes from "./public-routes";
+import ROUTES from "@/core/constants/routes.constants";
 
 const router = createBrowserRouter([
   {
-    path: "/login",
+    path: ROUTES.LOGIN,
     element: (
       <PublicRoutes>
-        <LoginPage />
+        <AuthLayout />
       </PublicRoutes>
     ),
+    children: [
+      {
+        index: true,
+        element: <LoginPage />,
+      },
+    ],
   },
   {
-    path: "/dashboard",
+    path: ROUTES.DASHBOARD,
     element: (
       <ProtectedRoutes>
         <DashboardLayout />
@@ -31,19 +47,36 @@ const router = createBrowserRouter([
         element: <DashboardPage />,
       },
       {
-        path: "devices",
+        path: ROUTES.DEVICES,
         element: <DevicesPage />,
       },
       {
-        path: "devices/:deviceId",
-        element: <DeviceDetailsPage />,
+        path: ROUTES.DEVICE_DETAILS,
+        element: <DeviceLayout />,
+        children: [
+          {
+            index: true,
+            element: <DeviceDetailsPage />,
+          },
+        ],
+      },
+      {
+        path: "analytics",
+        element: <AnalyticsPage />,
+      },
+      {
+        path: "alerts",
+        element: <AlertsPage />,
+      },
+      {
+        path: "settings",
+        element: <SettingsPage />,
       },
     ],
   },
-
   {
     path: "*",
-    element: <Navigate to="/dashboard" replace />,
+    element: <Navigate to={ROUTES.DASHBOARD} replace />,
   },
 ]);
 

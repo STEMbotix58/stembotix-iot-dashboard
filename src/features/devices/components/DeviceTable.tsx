@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useDevices } from "../hooks/useDevices";
 import { useDeviceSelection } from "../hooks/useDeviceSelection";
 
+import type { Device } from "@/entities/device/device.types";
+import { ROUTE_BUILDERS } from "@/core/constants/routes.constants";
+
 import DeviceStatus from "./DeviceStatus";
 
 const DeviceTable = () => {
@@ -12,10 +15,10 @@ const DeviceTable = () => {
 
   const { selectDevice } = useDeviceSelection();
 
-  const handleDeviceClick = (device: any) => {
+  const handleDeviceClick = (device: Device) => {
     selectDevice(device);
 
-    navigate(`/dashboard/devices/${device.id}`);
+    navigate(ROUTE_BUILDERS.DEVICE_DETAILS(device.id));
   };
 
   return (
@@ -42,7 +45,7 @@ const DeviceTable = () => {
         </thead>
 
         <tbody>
-          {devices.map((device) => (
+          {devices.map((device: Device) => (
             <tr
               key={device.id}
               onClick={() => handleDeviceClick(device)}
