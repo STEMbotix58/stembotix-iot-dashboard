@@ -120,7 +120,7 @@ const DeviceDetailsPage = () => {
 
         <StatsCard
           title="Last Seen"
-          value={device.lastSeen}
+          value={device.lastSeen ?? "Unknown"}
           icon={<Activity size={22} />}
         />
       </section>

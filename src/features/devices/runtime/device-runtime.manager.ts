@@ -191,7 +191,8 @@ class DeviceRuntimeManager {
       ...registeredDevice,
       runtime: {
         ...registeredDevice.runtime,
-        lifecycle: device.status === "Online" ? "online" : "offline",
+        lifecycle:
+          device.status === "Online" ? ("online" as const) : ("offline" as const),
       },
     };
 
