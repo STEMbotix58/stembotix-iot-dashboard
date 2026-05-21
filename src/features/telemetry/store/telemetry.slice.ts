@@ -24,7 +24,18 @@ const telemetrySlice = createSlice({
 
     telemetryReceived(state, action: PayloadAction<Telemetry>) {
       state.loading = false;
+
+      const existingIndex = state.telemetry.findIndex(
+        (item) => item.id === action.payload.id,
+      );
+
+      if (existingIndex >= 0) {
+        state.telemetry[existingIndex] = action.payload;
+        return;
+      }
+
       state.telemetry.push(action.payload);
+
       // Prevent infinite growth
       if (state.telemetry.length > 100) {
         state.telemetry.shift();

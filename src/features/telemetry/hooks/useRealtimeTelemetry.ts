@@ -1,18 +1,12 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import telemetryStreamService from "../services/telemetry-stream.service";
-import { telemetryReceived } from "../store/telemetry.slice";
+import { useSelector } from "react-redux";
+import { selectTelemetry } from "../store/telemetry.selector";
 
 const useRealtimeTelemetry = () => {
-  const dispatch = useDispatch();
+  const telemetry = useSelector(selectTelemetry);
 
-  useEffect(() => {
-    const unsubscribe = telemetryStreamService.subscribe((telemetry) => {
-      dispatch(telemetryReceived(telemetry));
-    });
-
-    return unsubscribe;
-  }, [dispatch]);
+  return {
+    telemetry,
+  };
 };
 
 export default useRealtimeTelemetry;

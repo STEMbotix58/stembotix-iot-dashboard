@@ -27,6 +27,20 @@ const alertsSlice = createSlice({
       state.alerts = action.payload;
     },
 
+    appendAlert(state, action: PayloadAction<Alert>) {
+      if (state.alerts.some((alert) => alert.id === action.payload.id)) {
+        return;
+      }
+
+      state.alerts.unshift(action.payload);
+
+      if (state.alerts.length > 250) {
+        state.alerts.pop();
+      }
+
+      state.loading = false;
+    },
+
     alertsFailed(state, action: PayloadAction<string>) {
       state.loading = false;
       state.error = action.payload;
@@ -34,7 +48,7 @@ const alertsSlice = createSlice({
   },
 });
 
-export const { alertsLoading, alertsLoaded, alertsFailed } =
+export const { alertsLoading, alertsLoaded, appendAlert, alertsFailed } =
   alertsSlice.actions;
 
 export default alertsSlice.reducer;

@@ -1,13 +1,14 @@
 import { useState } from "react";
 
 import automationService from "../services/automation.service";
+import type { DeviceCommandValue } from "../schemas/control.schema";
 
 type AutomationRule = {
   id: string;
   deviceId: string;
   condition: boolean;
   command: string;
-  value?: unknown;
+  value?: DeviceCommandValue;
 };
 
 const useAutomationRules = () => {

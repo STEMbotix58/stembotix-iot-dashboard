@@ -1,14 +1,23 @@
 import type { Telemetry } from "@/entities/telemetry/telemetry.types";
-import mqttTelemetryAdapter from "../adapters/mqtt.adapter";
+import telemetryNormalizerService, {
+  type TelemetryNormalizationContext,
+} from "./telemetry-normalizer.service";
+
 class TelemetryParserService {
-  parse(raw: string): Telemetry | null {
-    try {
-      const payload = JSON.parse(raw);
-      return mqttTelemetryAdapter(payload);
-    } catch {
-      return null;
-    }
+  parse(
+    raw: unknown,
+    context?: Partial<TelemetryNormalizationContext>,
+  ): Telemetry | null {
+    const result = telemetryNormalizerService.normalize(raw, {
+      source: context?.source ?? "runtime",
+      topic: context?.topic,
+      receivedAt: context?.receivedAt,
+    });
+
+    return result.ok ? result.telemetry : null;
   }
 }
 
-export default new TelemetryParserService();
+const telemetryParserService = new TelemetryParserService();
+
+export default telemetryParserService;

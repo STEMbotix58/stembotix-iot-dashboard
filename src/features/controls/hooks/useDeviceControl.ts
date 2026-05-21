@@ -3,17 +3,12 @@ import { useState } from "react";
 import deviceCommandService from "../services/device-command.service";
 
 import notificationService from "@/core/services/notification.service";
-
-type CommandPayload = {
-  deviceId: string;
-  command: string;
-  value?: unknown;
-};
+import type { DeviceCommandInput } from "../schemas/control.schema";
 
 const useDeviceControl = () => {
   const [loading, setLoading] = useState(false);
 
-  const executeCommand = async (payload: CommandPayload) => {
+  const executeCommand = async (payload: DeviceCommandInput) => {
     try {
       setLoading(true);
 

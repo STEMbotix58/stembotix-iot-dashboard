@@ -1,7 +1,7 @@
 export type TelemetryMetric = {
   key: string;
-  label: string;
-  unit: string;
+  label?: string;
+  unit?: string;
   value: number;
 };
 

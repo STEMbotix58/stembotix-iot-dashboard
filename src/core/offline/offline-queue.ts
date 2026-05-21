@@ -1,4 +1,4 @@
-type QueueItem<T = unknown> = {
+export type QueueItem<T = unknown> = {
   id: string;
   payload: T;
   createdAt: number;
@@ -7,16 +7,26 @@ type QueueItem<T = unknown> = {
 class OfflineQueue {
   private queue: QueueItem[] = [];
 
+  private maxSize = 500;
+
   add<T>(payload: T) {
-    this.queue.push({
+    if (this.queue.length >= this.maxSize) {
+      this.queue.shift();
+    }
+
+    const item = {
       id: crypto.randomUUID(),
       payload,
       createdAt: Date.now(),
-    });
+    };
+
+    this.queue.push(item);
+
+    return item;
   }
 
-  getAll() {
-    return [...this.queue];
+  getAll<T = unknown>() {
+    return [...this.queue] as QueueItem<T>[];
   }
 
   clear() {
@@ -29,6 +39,10 @@ class OfflineQueue {
 
   isEmpty() {
     return this.queue.length === 0;
+  }
+
+  size() {
+    return this.queue.length;
   }
 }
 

@@ -51,7 +51,7 @@ const DashboardSidebar = () => {
               className={({ isActive }) =>
                 `flex items-center rounded-xl px-4 py-3 text-sm font-medium transition ${
                   isActive
-                    ? "bg-black text-white"
+                    ? "bg-black text-white!"
                     : "text-slate-600 hover:bg-slate-100"
                 }`
               }

@@ -14,3 +14,4 @@ export const automationRuleSchema = z.object({
 
 export type DeviceCommandInput = z.infer<typeof deviceCommandSchema>;
 export type AutomationRuleInput = z.infer<typeof automationRuleSchema>;
+export type DeviceCommandValue = DeviceCommandInput["value"];

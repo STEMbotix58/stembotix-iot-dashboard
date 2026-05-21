@@ -1,17 +1,13 @@
 import deviceCommandService from "./device-command.service";
-
 import loggerService from "@/core/services/logger.service";
+import type { DeviceCommandValue } from "../schemas/control.schema";
 
 type AutomationRule = {
   id: string;
-
   deviceId: string;
-
   condition: boolean;
-
   command: string;
-
-  value?: unknown;
+  value?: DeviceCommandValue;
 };
 
 class AutomationService {
@@ -24,9 +20,7 @@ class AutomationService {
 
     await deviceCommandService.execute({
       deviceId: rule.deviceId,
-
       command: rule.command,
-
       value: rule.value,
     });
   }

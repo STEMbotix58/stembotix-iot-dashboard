@@ -1,7 +1,11 @@
-import { devicesApi } from "../api/devices.api";
+import deviceRuntimeManager from "@/features/devices/runtime/device-runtime.manager";
 
 export const devicesService = {
   getDevices: async () => {
-    return await devicesApi.getDevices();
+    return {
+      success: true,
+      message: "Devices loaded from device runtime manager",
+      data: deviceRuntimeManager.listDevices(),
+    };
   },
 };

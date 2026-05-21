@@ -6,17 +6,20 @@ const useWebSocket = () => {
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
-    websocketClient.connect();
-
     setConnected(websocketClient.isConnected());
 
-    websocketClient.onOpen(() => {
+    const unsubscribeOpen = websocketClient.onOpen(() => {
       setConnected(true);
     });
 
-    websocketClient.onClose(() => {
+    const unsubscribeClose = websocketClient.onClose(() => {
       setConnected(false);
     });
+
+    return () => {
+      unsubscribeOpen();
+      unsubscribeClose();
+    };
   }, []);
 
   return {

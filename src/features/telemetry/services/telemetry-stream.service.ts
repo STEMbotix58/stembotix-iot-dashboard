@@ -1,22 +1,29 @@
 import type { Telemetry } from "@/entities/telemetry/telemetry.types";
+import loggerService from "@/core/services/logger.service";
 
 class TelemetryStreamService {
-  private listeners: Array<(telemetry: Telemetry) => void> = [];
+  private listeners = new Set<(telemetry: Telemetry) => void>();
 
   subscribe(callback: (telemetry: Telemetry) => void) {
-    this.listeners.push(callback);
+    this.listeners.add(callback);
 
     return () => {
-      this.listeners = this.listeners.filter(
-        (listener) => listener !== callback,
-      );
+      this.listeners.delete(callback);
     };
   }
 
   emit(telemetry: Telemetry) {
     this.listeners.forEach((listener) => {
-      listener(telemetry);
+      try {
+        listener(telemetry);
+      } catch (error) {
+        loggerService.error("Telemetry stream listener failed", error);
+      }
     });
+  }
+
+  listenerCount() {
+    return this.listeners.size;
   }
 }
 

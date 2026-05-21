@@ -1,6 +1,6 @@
-import { AxiosError } from "axios";
+import { AxiosError, type AxiosResponse } from "axios";
 
-const responseSuccess = (response: unknown) => response;
+const responseSuccess = (response: AxiosResponse) => response;
 
 const responseError = (error: AxiosError) => {
   if (error.response?.status === 401) {

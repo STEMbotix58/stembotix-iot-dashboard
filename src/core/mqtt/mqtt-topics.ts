@@ -1,18 +1,21 @@
 const MQTT_TOPICS = {
   DEVICE: {
-    STATUS: (deviceId: string) => `devices/${deviceId}/status`,
-
-    TELEMETRY: (deviceId: string) => `devices/${deviceId}/telemetry`,
-
-    COMMAND: (deviceId: string) => `devices/${deviceId}/command`,
+    STATUS: (siteId: string, deviceId: string) =>
+      `site/${siteId}/device/${deviceId}/status`,
+    TELEMETRY: (siteId: string, deviceId: string) =>
+      `site/${siteId}/device/${deviceId}/telemetry`,
+    COMMAND: (siteId: string, deviceId: string) =>
+      `site/${siteId}/device/${deviceId}/command`,
+    STATE: (siteId: string, deviceId: string) =>
+      `site/${siteId}/device/${deviceId}/state`,
   },
 
   ALERTS: {
-    GLOBAL: "alerts/global",
+    GLOBAL: "site/global/alerts",
   },
 
   SYSTEM: {
-    HEALTH: "system/health",
+    HEALTH: "site/global/system/health",
   },
 };
 

@@ -1,4 +1,14 @@
-import { Activity, Cpu, MapPin, Wifi, WifiOff } from "lucide-react";
+import {
+  Activity,
+  Battery,
+  Cpu,
+  Gauge,
+  MapPin,
+  Radio,
+  ShieldAlert,
+  Wifi,
+  WifiOff,
+} from "lucide-react";
 
 import { Navigate } from "react-router-dom";
 
@@ -7,10 +17,8 @@ import { useDeviceDetails } from "../hooks/useDeviceDetails";
 import DeviceActions from "../components/DeviceActions";
 
 import LineChart from "@/shared/charts/LineChart";
-import AreaChart from "@/shared/charts/AreaChart";
-import GaugeChart from "@/shared/charts/GaugeChart";
-import BarChart from "@/shared/charts/BarChart";
 import RealtimeChart from "@/shared/charts/RealtimeChart";
+import GaugeChart from "@/shared/charts/GaugeChart";
 
 const DeviceDetailsPage = () => {
   const { device } = useDeviceDetails();
@@ -22,25 +30,15 @@ const DeviceDetailsPage = () => {
   const telemetrySeries = [
     {
       name: "Temperature",
-      data: [11, 32, 45, 32, 34, 52, 41],
+      data: [22, 24, 25, 26, 27, 26, 25],
     },
     {
       name: "Humidity",
-      data: [31, 40, 28, 51, 42, 109, 100],
+      data: [55, 57, 60, 61, 63, 60, 59],
     },
   ];
 
-  const telemetryBarCategories = [
-    "Mon",
-    "Tue",
-    "Wed",
-    "Thu",
-    "Fri",
-    "Sat",
-    "Sun",
-  ];
-
-  const telemetryCategories = [
+  const categories = [
     "10:00",
     "10:05",
     "10:10",
@@ -52,14 +50,16 @@ const DeviceDetailsPage = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* ================================================= */}
+      {/* HEADER */}
+      {/* ================================================= */}
 
-      <div className="rounded-3xl bg-white p-6 shadow-sm">
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+      <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-col gap-6 xl:flex-row xl:items-center xl:justify-between">
           <div>
-            <div className="flex items-center gap-3">
-              <div className="rounded-2xl bg-blue-100 p-3 text-blue-600">
-                <Cpu size={24} />
+            <div className="flex items-center gap-4">
+              <div className="rounded-2xl bg-blue-100 p-4 text-blue-600">
+                <Cpu size={30} />
               </div>
 
               <div>
@@ -67,25 +67,22 @@ const DeviceDetailsPage = () => {
                   {device.name}
                 </h1>
 
-                <p className="mt-1 text-slate-500">Device ID: {device.id}</p>
+                <p className="mt-1 text-sm text-slate-500">
+                  Device ID: {device.id}
+                </p>
               </div>
             </div>
 
-            <div className="mt-6 flex flex-wrap gap-4">
-              <div className="flex items-center gap-2 rounded-xl bg-slate-100 px-4 py-2">
-                <MapPin size={16} />
-                <span className="text-sm text-slate-700">
-                  {device.location}
-                </span>
-              </div>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <RuntimeBadge
+                icon={<MapPin size={16} />}
+                label={device.location}
+              />
 
-              <div className="flex items-center gap-2 rounded-xl bg-slate-100 px-4 py-2">
-                <Activity size={16} />
-                <span className="text-sm text-slate-700">{device.type}</span>
-              </div>
+              <RuntimeBadge icon={<Activity size={16} />} label={device.type} />
 
               <div
-                className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium ${
+                className={`flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-semibold ${
                   device.status === "Online"
                     ? "bg-green-100 text-green-700"
                     : "bg-red-100 text-red-700"
@@ -104,169 +101,283 @@ const DeviceDetailsPage = () => {
 
           <DeviceActions />
         </div>
-      </div>
+      </section>
 
-      {/* Stats */}
+      {/* ================================================= */}
+      {/* RUNTIME STATS */}
+      {/* ================================================= */}
 
-      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-        <div className="rounded-2xl bg-white p-5 shadow-sm">
-          <p className="text-sm text-slate-500">Current Reading</p>
+      <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <StatsCard title="Battery" value="82%" icon={<Battery size={22} />} />
 
-          <h2 className="mt-2 text-3xl font-bold text-slate-900">
-            {device.value}
-          </h2>
-        </div>
+        <StatsCard title="Signal" value="-61 dBm" icon={<Radio size={22} />} />
 
-        <div className="rounded-2xl bg-white p-5 shadow-sm">
-          <p className="text-sm text-slate-500">Battery</p>
+        <StatsCard
+          title="Current Value"
+          value={device.value}
+          icon={<Gauge size={22} />}
+        />
 
-          <h2 className="mt-2 text-3xl font-bold text-slate-900">82%</h2>
-        </div>
+        <StatsCard
+          title="Last Seen"
+          value={device.lastSeen}
+          icon={<Activity size={22} />}
+        />
+      </section>
 
-        <div className="rounded-2xl bg-white p-5 shadow-sm">
-          <p className="text-sm text-slate-500">Signal Strength</p>
+      {/* ================================================= */}
+      {/* LIVE TELEMETRY */}
+      {/* ================================================= */}
 
-          <h2 className="mt-2 text-3xl font-bold text-slate-900">-61 dBm</h2>
-        </div>
-
-        <div className="rounded-2xl bg-white p-5 shadow-sm">
-          <p className="text-sm text-slate-500">Last Seen</p>
-
-          <h2 className="mt-2 text-xl font-bold text-slate-900">
-            {device.lastSeen}
-          </h2>
-        </div>
-      </div>
-
-      {/* Charts */}
-
-      <div className="grid gap-6 xl:grid-cols-2">
+      <section className="grid gap-6 xl:grid-cols-2">
         <LineChart
-          title="System Status"
+          title="Environmental Telemetry"
           series={telemetrySeries}
-          categories={telemetryBarCategories}
-          customOptions={{
-            fill: {
-              type: "solid",
-              opacity: 0.1,
-            },
-            markers: {
-              size: 5,
-              strokeColors: "#fff",
-              strokeWidth: 2,
-            },
-          }}
+          categories={categories}
         />
-        <AreaChart
-          title="Server Load"
-          series={[{ name: "CPU %", data: [15, 25, 20, 45, 30] }]}
-          categories={["12pm", "1pm", "2pm", "3pm", "4pm"]}
-          customOptions={{
-            stroke: {
-              curve: "straight", // Full Control: Overriding the default smooth curve
-              width: 1,
-            },
-            colors: ["#000000"], // Overriding the color to a sleek black
-            fill: {
-              gradient: {
-                opacityFrom: 0.2,
-                opacityTo: 0,
-              },
-            },
-          }}
-        />
-        <BarChart
-          title="Environment Metrics"
-          series={[
-            { name: "Temperature", data: [11, 32, 45, 32, 34, 52, 41] },
-            { name: "Humidity", data: [31, 40, 28, 51, 42, 109, 100] },
-          ]}
-          categories={telemetryCategories}
-        />
+
         <RealtimeChart
-          title="Temperature Over Time"
+          title="Realtime Sensor Stream"
           series={telemetrySeries}
-          categories={telemetryCategories}
+          categories={categories}
           height={350}
-          customOptions={{
-            xaxis: {
-              min: 0,
-              max: 10,
-            },
-            yaxis: {
-              min: 0,
-              max: 120,
-            },
-          }}
         />
-      </div>
+      </section>
 
-      {/* Bottom Section */}
+      {/* ================================================= */}
+      {/* SENSOR GRID */}
+      {/* ================================================= */}
 
-      <div className="grid gap-6 xl:grid-cols-3">
+      <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <SensorCard label="Temperature" value="26°C" />
+
+        <SensorCard label="Humidity" value="61%" />
+
+        <SensorCard label="Voltage" value="220V" />
+
+        <SensorCard label="Current" value="12A" />
+      </section>
+
+      {/* ================================================= */}
+      {/* RUNTIME + SHADOW */}
+      {/* ================================================= */}
+
+      <section className="grid gap-6 xl:grid-cols-3">
         {/* Gauge */}
-        <>
-          <GaugeChart
-            label="CPU Load"
-            value={76}
-            customOptions={{
-              plotOptions: {
-                radialBar: {
-                  track: {
-                    background: "#E0E7FF",
-                    strokeWidth: "97%",
-                    margin: 5,
-                  },
-                  dataLabels: {
-                    value: {
-                      formatter: (val) => `${val}ºC`,
-                    },
-                  },
-                },
-              },
-            }}
-          />
-        </>
 
-        {/* Device Metadata */}
+        <div className="rounded-3xl bg-white p-6 shadow-sm">
+          <GaugeChart label="CPU Load" value={76} />
+        </div>
+
+        {/* Shadow */}
 
         <div className="rounded-3xl bg-white p-6 shadow-sm xl:col-span-2">
-          <h2 className="text-xl font-bold text-slate-900">
-            Device Information
-          </h2>
+          <h2 className="text-xl font-bold text-slate-900">Device Shadow</h2>
 
-          <div className="mt-6 grid gap-5 md:grid-cols-2">
-            <InfoItem label="Firmware" value="v2.5.1" />
+          <div className="mt-6 grid gap-5 md:grid-cols-3">
+            <ShadowBlock
+              title="Reported"
+              data={`{
+  "temperature": 26,
+  "relay": true
+}`}
+            />
 
-            <InfoItem label="Protocol" value="MQTT" />
+            <ShadowBlock
+              title="Desired"
+              data={`{
+  "relay": false
+}`}
+            />
 
-            <InfoItem label="IP Address" value="192.168.1.45" />
-
-            <InfoItem label="MAC Address" value="A8:3F:21:9B:4C:22" />
-
-            <InfoItem label="Uptime" value="12 Days" />
-
-            <InfoItem label="Environment" value="Production" />
+            <ShadowBlock
+              title="Delta"
+              data={`{
+  "relay": false
+}`}
+            />
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* ================================================= */}
+      {/* CONNECTIVITY + COMMANDS */}
+      {/* ================================================= */}
+
+      <section className="grid gap-6 xl:grid-cols-2">
+        {/* Connectivity */}
+
+        <div className="rounded-3xl bg-white p-6 shadow-sm">
+          <h2 className="text-xl font-bold text-slate-900">Connectivity</h2>
+
+          <div className="mt-6 space-y-4">
+            <InfoRow label="Protocol" value="MQTT" />
+
+            <InfoRow label="Broker" value="ws://localhost:9001" />
+
+            <InfoRow label="QoS" value="1" />
+
+            <InfoRow label="WebSocket" value="Connected" />
+
+            <InfoRow label="IP Address" value="192.168.1.45" />
+          </div>
+        </div>
+
+        {/* Command Center */}
+
+        <div className="rounded-3xl bg-white p-6 shadow-sm">
+          <h2 className="text-xl font-bold text-slate-900">Command Center</h2>
+
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            <CommandButton label="Restart Device" />
+
+            <CommandButton label="Sync State" />
+
+            <CommandButton label="Firmware Update" />
+
+            <CommandButton label="Emergency Stop" />
+          </div>
+        </div>
+      </section>
+
+      {/* ================================================= */}
+      {/* ALERTS + TIMELINE */}
+      {/* ================================================= */}
+
+      <section className="grid gap-6 xl:grid-cols-2">
+        {/* Alerts */}
+
+        <div className="rounded-3xl bg-white p-6 shadow-sm">
+          <div className="flex items-center gap-3">
+            <ShieldAlert className="text-red-500" />
+
+            <h2 className="text-xl font-bold text-slate-900">Alerts</h2>
+          </div>
+
+          <div className="mt-6 space-y-4">
+            <AlertItem
+              title="High Temperature"
+              description="Temperature exceeded threshold."
+            />
+
+            <AlertItem
+              title="Signal Drop"
+              description="Device signal temporarily degraded."
+            />
+          </div>
+        </div>
+
+        {/* Timeline */}
+
+        <div className="rounded-3xl bg-white p-6 shadow-sm">
+          <h2 className="text-xl font-bold text-slate-900">
+            Activity Timeline
+          </h2>
+
+          <div className="mt-6 space-y-5">
+            <TimelineItem time="10:24 AM" event="Telemetry updated" />
+
+            <TimelineItem time="10:18 AM" event="Command executed" />
+
+            <TimelineItem time="10:10 AM" event="Device connected" />
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
 
 export default DeviceDetailsPage;
 
-interface InfoItemProps {
+/* ================================================= */
+/* HELPERS */
+/* ================================================= */
+
+const RuntimeBadge = ({
+  icon,
+  label,
+}: {
+  icon: React.ReactNode;
   label: string;
+}) => (
+  <div className="flex items-center gap-2 rounded-2xl bg-slate-100 px-4 py-2">
+    {icon}
+
+    <span className="text-sm font-medium text-slate-700">{label}</span>
+  </div>
+);
+
+const StatsCard = ({
+  title,
+  value,
+  icon,
+}: {
+  title: string;
   value: string;
-}
+  icon: React.ReactNode;
+}) => (
+  <div className="rounded-3xl bg-white p-6 shadow-sm">
+    <div className="flex items-center justify-between">
+      <p className="text-sm text-slate-500">{title}</p>
 
-const InfoItem = ({ label, value }: InfoItemProps) => {
-  return (
-    <div className="rounded-2xl border border-slate-100 p-4">
-      <p className="text-sm text-slate-500">{label}</p>
-
-      <h3 className="mt-2 font-semibold text-slate-900">{value}</h3>
+      <div className="text-slate-500">{icon}</div>
     </div>
-  );
-};
+
+    <h2 className="mt-4 text-3xl font-bold text-slate-900">{value}</h2>
+  </div>
+);
+
+const SensorCard = ({ label, value }: { label: string; value: string }) => (
+  <div className="rounded-3xl bg-white p-5 shadow-sm">
+    <p className="text-sm text-slate-500">{label}</p>
+
+    <h2 className="mt-3 text-2xl font-bold text-slate-900">{value}</h2>
+  </div>
+);
+
+const ShadowBlock = ({ title, data }: { title: string; data: string }) => (
+  <div className="rounded-2xl bg-slate-950 p-4">
+    <p className="mb-3 text-sm font-semibold text-slate-400">{title}</p>
+
+    <pre className="overflow-x-auto text-sm text-green-400">{data}</pre>
+  </div>
+);
+
+const InfoRow = ({ label, value }: { label: string; value: string }) => (
+  <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+    <p className="text-sm text-slate-500">{label}</p>
+
+    <p className="font-semibold text-slate-900">{value}</p>
+  </div>
+);
+
+const CommandButton = ({ label }: { label: string }) => (
+  <button className="rounded-2xl bg-black px-5 py-4 text-sm font-semibold text-white transition hover:bg-slate-800">
+    {label}
+  </button>
+);
+
+const AlertItem = ({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) => (
+  <div className="rounded-2xl border border-red-100 bg-red-50 p-4">
+    <h3 className="font-semibold text-red-700">{title}</h3>
+
+    <p className="mt-1 text-sm text-red-600">{description}</p>
+  </div>
+);
+
+const TimelineItem = ({ time, event }: { time: string; event: string }) => (
+  <div className="flex items-start gap-4">
+    <div className="mt-2 h-3 w-3 rounded-full bg-black" />
+    <div>
+      <p className="text-sm text-slate-500">{time}</p>
+
+      <h3 className="font-semibold text-slate-900">{event}</h3>
+    </div>
+  </div>
+);

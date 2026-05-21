@@ -2,28 +2,38 @@ import { controlsApi } from "../api/controls.api";
 
 import commandQueueService from "./command-queue.service";
 import mqttCommandService from "./mqtt-command.service";
+import retryManager from "@/core/offline/retry-manager";
 
 import loggerService from "@/core/services/logger.service";
 
 import transformCommandPayload from "../transformers/command-payload.transformer";
 
-import { deviceCommandSchema } from "../schemas/control.schema";
-
-type DeviceCommandInputPayload = {
-  deviceId: string;
-  command: string;
-  value?: string | number | boolean;
-};
+import {
+  deviceCommandSchema,
+  type DeviceCommandInput,
+} from "../schemas/control.schema";
 
 class DeviceCommandService {
-  async execute(payload: DeviceCommandInputPayload) {
+  async execute(payload: DeviceCommandInput) {
+    deviceCommandSchema.parse(payload);
+    loggerService.info("Executing device command", payload);
+    commandQueueService.add(payload);
+
+    mqttCommandService.publish(payload);
+
+    const transformedPayload = transformCommandPayload(payload);
+
     try {
-      loggerService.info("Executing device command", payload);
-      commandQueueService.add(payload);
-      mqttCommandService.publish(payload);
-      deviceCommandSchema.parse(payload);
-      const transformedPayload = transformCommandPayload(payload);
-      const response = await controlsApi.sendCommand(transformedPayload);
+      const response = await retryManager.execute(
+        async () => {
+          return await controlsApi.sendCommand(transformedPayload);
+        },
+        {
+          retries: 3,
+          delay: 1200,
+        },
+      );
+
       commandQueueService.complete(payload);
       return response;
     } catch (error) {

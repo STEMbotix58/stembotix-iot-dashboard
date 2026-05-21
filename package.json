@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "runtime": "node src/server/websocket-server.js",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -14,6 +15,7 @@
     "@tailwindcss/vite": "^4.3.0",
     "apexcharts": "^5.11.0",
     "axios": "^1.16.0",
+    "cors": "^2.8.6",
     "lucide-react": "^1.14.0",
     "mqtt": "^5.15.1",
     "react": "^19.2.6",
@@ -21,6 +23,8 @@
     "react-dom": "^19.2.6",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.15.0",
+    "ws": "^8.20.1",
+    "wscat": "^6.1.0",
     "yup": "^1.7.1",
     "zod": "^4.4.3"
   },

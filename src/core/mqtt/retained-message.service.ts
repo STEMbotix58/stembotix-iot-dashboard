@@ -1,13 +1,13 @@
-import mqtt from "mqtt";
+import type { MqttClient } from "mqtt";
 
 class RetainedMessageService {
-  publish(client: mqtt.MqttClient, topic: string, payload: unknown) {
+  publish(client: MqttClient, topic: string, payload: unknown) {
     client.publish(topic, JSON.stringify(payload), {
       retain: true,
     });
   }
 
-  clear(client: mqtt.MqttClient, topic: string) {
+  clear(client: MqttClient, topic: string) {
     client.publish(topic, "", {
       retain: true,
     });

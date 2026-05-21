@@ -70,7 +70,10 @@ const AirQualityWidget = ({ aqi }: Props) => {
         </div>
 
         {/* Status Pill */}
-        <div className="mt-6 flex items-center gap-2 rounded-full bg-slate-800/80 px-4 py-1.5 ring-1 ring-white/5">
+        <div
+          className={`mt-6 flex items-center gap-2 rounded-full bg-slate-800/80 px-4 py-1.5 ring-1 ring-white/5 ${glowClass}`}
+        >
+          <span className={`h-2 w-2 rounded-full ${bgClass}`} />
           <Icon className={`h-4 w-4 ${colorClass}`} />
           <span
             className={`text-sm font-bold uppercase tracking-wider ${colorClass}`}
