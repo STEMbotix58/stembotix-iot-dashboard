@@ -2,7 +2,7 @@ import FleetTelemetryChart from "@/features/telemetry/components/FleetTelemetryC
 
 const DashboardAnalyticsSection = () => {
   return (
-    <section>
+    <section className="col-span-1">
       <FleetTelemetryChart />
     </section>
   );

@@ -1,3 +1,5 @@
+import { capitalize } from "@/core/utils/formatter.util";
+
 type Props = {
   value: string;
   onChange: (value: string) => void;
@@ -18,7 +20,7 @@ const AlertFilters = ({ value, onChange }: Props) => {
               : "bg-slate-100 text-slate-700"
           }`}
         >
-          {filter}
+          {capitalize(filter)}
         </button>
       ))}
     </div>

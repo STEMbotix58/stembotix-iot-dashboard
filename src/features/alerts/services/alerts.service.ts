@@ -12,6 +12,21 @@ class AlertsService {
     }
   }
 
+  async fetchAlertsPaginated(params?: {
+    page?: number;
+    page_size?: number;
+    search?: string;
+    ordering?: string;
+  }) {
+    try {
+      const response = await alertsApi.getAlertsPaginated(params);
+      return response;
+    } catch (error) {
+      loggerService.error("Failed to fetch paginated alerts", error);
+      throw error;
+    }
+  }
+
   sortBySeverity(
     alerts: {
       severity: string;

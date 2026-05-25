@@ -10,8 +10,10 @@ const DashboardPage = () => {
     <div className="space-y-6">
       <DashboardHeader />
       <DashboardOverviewSection />
-      <DashboardAnalyticsSection />
-      <DashboardDevicesSection />
+      <div className="grid gap-6 xl:grid-cols-2">
+        <DashboardAnalyticsSection />
+        <DashboardDevicesSection />
+      </div>
       <DashboardRuntimeSection />
     </div>
   );

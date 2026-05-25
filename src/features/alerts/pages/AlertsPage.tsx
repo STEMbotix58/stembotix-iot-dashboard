@@ -1,12 +1,14 @@
 import { useMemo, useState } from "react";
 
-import useAlerts from "../hooks/useAlerts";
+import useAlertsPaginated from "../hooks/useAlertsPaginated";
 import AlertFilters from "../components/AlertFilters";
 import AlertList from "../components/AlertList";
+import Pagination from "@/core/pagination/Pagination";
 
 const AlertsPage = () => {
   const [filter, setFilter] = useState("all");
-  const { alerts } = useAlerts();
+  const { alerts, pagination, setPage, setPageSize, loading } =
+    useAlertsPaginated();
 
   const filteredAlerts = useMemo(() => {
     if (filter === "all") {
@@ -30,6 +32,15 @@ const AlertsPage = () => {
       </div>
       {/* Alerts */}
       <AlertList alerts={filteredAlerts} />
+
+      <div className="rounded-2xl bg-white shadow-sm">
+        <Pagination
+          pagination={pagination}
+          onPageChange={(p) => setPage(p)}
+          onPageSizeChange={(s) => setPageSize(s)}
+          loading={loading}
+        />
+      </div>
     </div>
   );
 };

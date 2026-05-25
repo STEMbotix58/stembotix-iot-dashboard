@@ -11,7 +11,7 @@ type Props = {
 
 const AnalyticsChart = ({ title, series, categories }: Props) => {
   return (
-    <div className="rounded-2xl bg-white p-4 shadow-sm">
+    <div>
       <LineChart title={title} series={series} categories={categories} />
     </div>
   );

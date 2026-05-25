@@ -9,7 +9,7 @@ const sanitizeValue = (value: string) => {
 };
 
 const FleetTelemetryChart = () => {
-  const { devices } = useDevices();
+  const { devices = [] } = useDevices();
 
   const telemetrySeries = useMemo(() => {
     return [

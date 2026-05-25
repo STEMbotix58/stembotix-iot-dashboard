@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useDevices } from "../hooks/useDevices";
 import { useDeviceSelection } from "../hooks/useDeviceSelection";
+import Pagination from "@/core/pagination/Pagination";
 
 import type { Device } from "@/entities/device/device.types";
 import { ROUTE_BUILDERS } from "@/core/constants/routes.constants";
@@ -11,7 +12,13 @@ import DeviceStatus from "./DeviceStatus";
 const DeviceTable = () => {
   const navigate = useNavigate();
 
-  const { devices } = useDevices();
+  const {
+    devices = [],
+    pagination,
+    setPage,
+    setPageSize,
+    loading,
+  } = useDevices();
 
   const { selectDevice } = useDeviceSelection();
 
@@ -74,6 +81,13 @@ const DeviceTable = () => {
           ))}
         </tbody>
       </table>
+
+      <Pagination
+        pagination={pagination}
+        onPageChange={(p) => setPage(p)}
+        onPageSizeChange={(s) => setPageSize(s)}
+        loading={loading}
+      />
     </div>
   );
 };

@@ -7,7 +7,7 @@ import DeviceRuntimeSite from "./DeviceRuntimeSite";
 import { dashboardLayoutService } from "@/features/dashboard/services/dashboard-layout.service";
 
 const DeviceRuntimeGrid = () => {
-  const { devices, loading } = useDevices();
+  const { devices = [], loading } = useDevices();
 
   const sites = useMemo(() => {
     return dashboardLayoutService.groupBySiteAndRoom(devices);

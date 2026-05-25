@@ -2,7 +2,7 @@ import DeviceStatusTable from "@/features/devices/components/DeviceStatusTable";
 
 const DashboardDevicesSection = () => {
   return (
-    <section>
+    <section className="col-span-1">
       <DeviceStatusTable />
     </section>
   );

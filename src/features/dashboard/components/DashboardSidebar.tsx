@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import ROUTES from "@/core/constants/routes.constants";
-
+import Logo from "@/shared/assets/logo.svg";
 const navigation = [
   {
     label: "Dashboard",
@@ -33,11 +33,12 @@ const DashboardSidebar = () => {
     <aside className="hidden w-72 flex-col border-r border-slate-200 bg-white lg:flex">
       {/* Logo */}
       <div className="border-b border-slate-200 p-6">
-        <h1 className="text-2xl font-bold text-slate-900">IoT Dashboard</h1>
+        <img src={Logo} alt="STEMbotix Logo" />
+        {/* <h1 className="text-2xl font-bold text-slate-900">IoT Dashboard</h1> */}
 
-        <p className="mt-1 text-sm text-slate-500">
+        <h3 className="text-lg text-center font-bold text-slate-900">
           Device Monitoring Platform
-        </p>
+        </h3>
       </div>
 
       {/* Navigation */}
@@ -51,8 +52,8 @@ const DashboardSidebar = () => {
               className={({ isActive }) =>
                 `flex items-center rounded-xl px-4 py-3 text-sm font-medium transition ${
                   isActive
-                    ? "bg-black text-white!"
-                    : "text-slate-600 hover:bg-slate-100"
+                    ? "bg-[#2c2872] text-white!"
+                    : "text-[#2c2872]/50 hover:bg-slate-100"
                 }`
               }
             >

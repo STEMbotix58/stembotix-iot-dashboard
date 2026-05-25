@@ -7,4 +7,8 @@ export type DevicesState = {
   selectedDevice: Device | null;
   loading: boolean;
   error: string | null;
+  // pagination
+  currentPage?: number;
+  pageSize?: number;
+  totalCount?: number;
 };
