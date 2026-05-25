@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import { memo } from "react";
 import { buildPageList } from "./pagination.utils";
 import type { PaginationState } from "./pagination.types";
 
